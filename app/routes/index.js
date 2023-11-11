@@ -7,6 +7,7 @@ const router = express.Router();
 module.exports = router;
 
 router.post("/addUser", async (req, res) => {
+    console.log(req);
     const newUser = new UserModel({ ...req.body });
     newUser
         .save()
@@ -21,11 +22,22 @@ router.get("/getAll", (req, res) => {
 
 router.post("/getOne/", async (req, res) => {
     const { serviceNo, password } = req.body;
+    console.log(
+        "User requested with serviceNo : " +
+            serviceNo +
+            " password : " +
+            password
+    );
     UserModel.findOne({ serviceNo, password })
         .then((val) => {
             if (val === null) {
+                console.log(
+                    val,
+                    "No user found with service no : " + serviceNo
+                );
                 res.status(404).json({ message: "No user found" });
             } else {
+                console.log(val, "User found with service no : " + serviceNo);
                 res.json(val);
             }
         })
@@ -34,14 +46,14 @@ router.post("/getOne/", async (req, res) => {
 
 router.post("/editOne/", async (req, res) => {
     const data = req.body;
-    console.log(data.password);
+    console.log("User requested for edit", req);
     UserModel.findOneAndUpdate(
         { serviceNo: data.serviceNo },
         { ...data },
         { new: true }
     )
         .then((out) => {
-            console.log(out.password);
+            console.log("successfully edited ", out);
             res.json(out);
         })
         .catch((err) => {
