@@ -17,7 +17,10 @@ router.post("/addUser", async (req, res) => {
 });
 
 router.get("/getAll", (req, res) => {
-    res.send({ hello: "Get All API" });
+     UserModel.find({}).then((out)=>{
+        res.send(out);
+    })
+    // res.send({ hello: "Get All API" });
 });
 
 router.post("/getOne/", async (req, res) => {
