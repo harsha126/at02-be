@@ -1,6 +1,7 @@
 const express = require("express");
 const UserModel = require("../../models/user");
 const { send } = require("express/lib/response");
+const { ObjectId } = require("mongodb");
 
 const router = express.Router();
 
@@ -17,10 +18,29 @@ router.post("/addUser", async (req, res) => {
 });
 
 router.get("/getAll", (req, res) => {
-     UserModel.find({}).then((out)=>{
+    UserModel.find({}).then((out) => {
         res.send(out);
-    })
+    });
     // res.send({ hello: "Get All API" });
+});
+
+router.get("/getById/:id", (req, res) => {
+    const { id } = req.params;
+    console.log("get user by id : ", id);
+    UserModel.findOne({ _id: id })
+        .then((out) => {
+            if (out === null) {
+                console.log("user not found with id :" + id);
+                res.status(404).send({ message: "no user found" });
+            } else {
+                console.log("user found with id :" + id);
+                res.send(out);
+            }
+        })
+        .catch((err) => {
+            console.log(err);
+            res.status(500).send({ message: "Internal server error" });
+        });
 });
 
 router.post("/getOne/", async (req, res) => {

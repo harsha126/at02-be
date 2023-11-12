@@ -4,13 +4,13 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 
 const app = express();
-app.use(express.json({ limit: "50mb" }));
-app.use(bodyParser.json());
 let corsOptions = {
     origin: ["http://localhost:5550", "http://localhost:3000"],
 };
-
 app.use(cors());
+app.use(express.json({ limit: "50mb" }));
+app.use(bodyParser.json());
+
 
 const mongoURL = "mongodb://localhost:27017/at02";
 const upstreamUrl =
