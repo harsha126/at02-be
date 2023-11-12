@@ -8,13 +8,14 @@ const router = express.Router();
 module.exports = router;
 
 router.post("/addUser", async (req, res) => {
-    console.log(req);
     const newUser = new UserModel({ ...req.body });
     newUser
         .save()
-        .then((result) => console.log(result.oldImage.length))
-        .catch((err) => console.log(err));
-    res.json({ result: "done" });
+        .then((result) => res.json({_id:result._id}))
+        .catch((err) => {
+            console.log("Error while adding new user id ",req.body.name ,err)
+            res.status(500).json({message:'Internal Server error'})
+        });
 });
 
 router.get("/getAll", (req, res) => {
