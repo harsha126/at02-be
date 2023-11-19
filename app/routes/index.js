@@ -61,7 +61,7 @@ router.post("/getOne/", async (req, res) => {
                 );
                 res.status(404).json({ message: "No user found" });
             } else {
-                console.log(val, "User found with service no : " + serviceNo);
+                console.log(val.name, "User found with service no : " + serviceNo);
                 res.json(val);
             }
         })
@@ -70,14 +70,14 @@ router.post("/getOne/", async (req, res) => {
 
 router.post("/editOne/", async (req, res) => {
     const data = req.body;
-    console.log("User requested for edit", req);
+    console.log("User requested for edit", req.name);
     UserModel.findOneAndUpdate(
         { serviceNo: data.serviceNo },
         { ...data },
         { new: true }
     )
         .then((out) => {
-            console.log("successfully edited ", out);
+            console.log("successfully edited ", out.name);
             res.json(out);
         })
         .catch((err) => {
